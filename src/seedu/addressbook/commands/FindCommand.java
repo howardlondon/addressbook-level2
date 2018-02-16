@@ -1,10 +1,6 @@
 package seedu.addressbook.commands;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import seedu.addressbook.data.person.ReadOnlyPerson;
 
@@ -17,7 +13,7 @@ public class FindCommand extends Command {
     public static final String COMMAND_WORD = "find";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
-            + "the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
+            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice bob charlie";
 
@@ -41,6 +37,19 @@ public class FindCommand extends Command {
     }
 
     /**
+     *
+     * @param SensitiveKeywords for searching
+     * @return list of case-insensitive keywords
+     */
+    private static Set<String> convertToCaseInsensitive (Collection<String> SensitiveKeywords){
+        final Set<String> InsensitiveWords = new HashSet<>();
+        for(String ConvertWords : SensitiveKeywords) {
+            InsensitiveWords.add(ConvertWords.toLowerCase());
+        }
+        return InsensitiveWords;
+    }
+
+    /**
      * Retrieves all persons in the address book whose names contain some of the specified keywords.
      *
      * @param keywords for searching
@@ -48,9 +57,10 @@ public class FindCommand extends Command {
      */
     private List<ReadOnlyPerson> getPersonsWithNameContainingAnyKeyword(Set<String> keywords) {
         final List<ReadOnlyPerson> matchedPersons = new ArrayList<>();
+        Set<String> InsensitiveKeywords = convertToCaseInsensitive(keywords);
         for (ReadOnlyPerson person : addressBook.getAllPersons()) {
-            final Set<String> wordsInName = new HashSet<>(person.getName().getWordsInName());
-            if (!Collections.disjoint(wordsInName, keywords)) {
+            final Set<String> wordsInName = new HashSet<>(person.getName().getInsensitiveWorddsInName());
+            if (!Collections.disjoint(wordsInName, InsensitiveKeywords)) {
                 matchedPersons.add(person);
             }
         }
