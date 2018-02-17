@@ -37,16 +37,16 @@ public class FindCommand extends Command {
     }
 
     /**
-     *
+     * Convert all the keywords into lowercase
      * @param SensitiveKeywords for searching
      * @return list of case-insensitive keywords
      */
-    private static Set<String> convertToCaseInsensitive (Collection<String> SensitiveKeywords){
-        final Set<String> InsensitiveWords = new HashSet<>();
-        for(String ConvertWords : SensitiveKeywords) {
-            InsensitiveWords.add(ConvertWords.toLowerCase());
+    private static Set<String> convertToCaseInsensitive (Collection<String> sensitiveKeywords){
+        final Set<String> insensitiveWords = new HashSet<>();
+        for(String convertWords : sensitiveKeywords) {
+            insensitiveWords.add(convertWords.toLowerCase());
         }
-        return InsensitiveWords;
+        return insensitiveWords;
     }
 
     /**
@@ -59,7 +59,7 @@ public class FindCommand extends Command {
         final List<ReadOnlyPerson> matchedPersons = new ArrayList<>();
         Set<String> InsensitiveKeywords = convertToCaseInsensitive(keywords);
         for (ReadOnlyPerson person : addressBook.getAllPersons()) {
-            final Set<String> wordsInName = new HashSet<>(person.getName().getInsensitiveWorddsInName());
+            final Set<String> wordsInName = new HashSet<>(person.getName().getInsensitiveWordsInName());
             if (!Collections.disjoint(wordsInName, InsensitiveKeywords)) {
                 matchedPersons.add(person);
             }

@@ -43,7 +43,12 @@ public class Name {
         return Arrays.asList(fullName.split("\\s+"));
     }
 
-    public List<String> getInsensitiveWorddsInName(){
+    /**
+     *
+     * Retrieves a listing of every word in the name, in order and in lowercase:w
+     * .
+     */
+    public List<String> getInsensitiveWordsInName(){
         return Arrays.asList(fullName.toLowerCase().split("\\s+"));
     }
 
